@@ -9,10 +9,10 @@ class UserSerializer(serializers.ModelSerializer):
 class AnswerNumberSerializer(serializers.ModelSerializer):
      class Meta:
         model = Answer
-        fields = ("answer_count",)
+        fields = ("owner", "body")
 
 class ListQuestionsSerializer(serializers.ModelSerializer):
-    question_answers = AnswerNumberSerializer(many=True, read_only=False)
+    answers = AnswerNumberSerializer(many=True, read_only=False)
     class Meta:
         model = Answer
         fields = (
@@ -20,5 +20,5 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
             "title",
             "owner",
             "created_at",
-            "answer",
+            "answers",
         )
