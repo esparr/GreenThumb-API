@@ -10,6 +10,8 @@ django-extensions = "*"
 psycopg2-binary = "*"
 django-on-heroku = "*"
 gunicorn = "*"
+djoser = "*"
+djangorestframework = "*"
 
 [dev-packages]
 autopep8 = "*"
