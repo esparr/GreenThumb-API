@@ -10,12 +10,12 @@ from .serializers import ListQuestionsSerializer, UserSerializer
 class UserViewSet(DjoserUserViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    
+
 class QuestionsViewSet(ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = ListQuestionsSerializer
 
-    def get(self, request, format=None):
-        answer_count = Answer.objects.count()
-        content = {'answer_count': answer_count}
-        return Response(content)
+    # def get(self, request, format=None):
+    #     answer_count = Answer.objects.count()
+    #     content = {'answer_count': answer_count}
+    #     return Response(content)
