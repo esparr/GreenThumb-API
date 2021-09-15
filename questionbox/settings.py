@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     # Third-party
     'django_extensions',
     'rest_framework',
-    'djoser'
+    'djoser',
 
     # Project-specific
     'core',
