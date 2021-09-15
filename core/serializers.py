@@ -14,7 +14,7 @@ class AnswerNumberSerializer(serializers.ModelSerializer):
 class ListQuestionsSerializer(serializers.ModelSerializer):
     answers = AnswerNumberSerializer(many=True, read_only=False)
     class Meta:
-        model = Answer
+        model = Question
         fields = (
             "pk",
             "title",

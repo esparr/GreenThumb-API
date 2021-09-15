@@ -22,8 +22,8 @@ class Question(models.Model):
             return f"{self.title}"
 
 class Answer(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_answers', null=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_answers', null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answers', null=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers', null=True)
     body = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     # accepted 
