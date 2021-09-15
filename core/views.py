@@ -10,6 +10,7 @@ from .serializers import ListQuestionsSerializer, UserSerializer
 class UserViewSet(DjoserUserViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
 class QuestionsViewSet(ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = ListQuestionsSerializer
