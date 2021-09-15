@@ -1,5 +1,7 @@
 from core.models import Question, Answer, User
 from rest_framework import serializers
+from django.db.models import Count
+
 
 # class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -7,12 +9,17 @@ from rest_framework import serializers
 #         fields = ("username", "email")
 
 class AnswerNumberSerializer(serializers.ModelSerializer):
-     class Meta:
+    answer_count = serializers.SerializerMethodField('get_count')
+    class Meta:
         model = Answer
-        fields = ("owner", "body")
+        fields = ("answer_count")
+    
+    def get_count(self, obj):    
+        return Question.objects.annotate(number_of_answers=Count('answer'))
 
 class ListQuestionsSerializer(serializers.ModelSerializer):
-    answers = AnswerNumberSerializer(many=True, read_only=False)
+    answer_count = AnswerNumberSerializer(many=True, read_only=True)
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     class Meta:
         model = Question
         fields = (
@@ -20,5 +27,5 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
             "title",
             "owner",
             "created_at",
-            "answers",
+            "answer",
         )

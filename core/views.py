@@ -4,6 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Question, Answer, User
 from .serializers import ListQuestionsSerializer
+from django.db.models import Count
 
 # Create your views here.
 
@@ -12,10 +13,5 @@ from .serializers import ListQuestionsSerializer
 #     serializer_class = UserSerializer
 
 class QuestionsViewSet(ModelViewSet):
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().order_by("-created_at")
     serializer_class = ListQuestionsSerializer
-
-    # def get(self, request, format=None):
-    #     answer_count = Answer.objects.count()
-    #     content = {'answer_count': answer_count}
-    #     return Response(content)
