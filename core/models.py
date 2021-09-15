@@ -26,4 +26,4 @@ class Answer(models.Model):
     # favorted
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.body}"
