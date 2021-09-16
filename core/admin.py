@@ -13,5 +13,5 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ['body', 'owner', 'created_at']
+    list_display = ['body', 'question', 'owner', 'created_at']
     pass
