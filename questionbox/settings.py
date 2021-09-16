@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     # Third-party
     'django_extensions',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
