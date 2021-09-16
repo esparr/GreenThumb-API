@@ -16,7 +16,6 @@ class Question(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    # favorited
     
     def __str__(self):
             return f"{self.title}"
@@ -26,8 +25,8 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers', null=True)
     body = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    # accepted 
-    # favorted
+    accepted = models.BooleanField(default=False)
+    favorited_by = models.ManyToManyField("User", related_name="fav_answers")
 
     def __str__(self):
         return f"{self.body}"
