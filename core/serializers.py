@@ -41,6 +41,7 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     class Meta:
         model = Question
         fields = (

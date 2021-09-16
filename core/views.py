@@ -21,3 +21,6 @@ class QuestionsViewSet(ModelViewSet):
         if self.request.method == 'GET':
             serializer_class = ListQuestionsSerializer
         return serializer_class
+        
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
