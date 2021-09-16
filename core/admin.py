@@ -8,8 +8,10 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
+    list_display = ['title', 'owner', 'created_at']
     pass
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
+    list_display = ['body', 'owner', 'created_at']
     pass
