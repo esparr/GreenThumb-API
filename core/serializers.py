@@ -1,3 +1,4 @@
+from django.utils.timezone import localtime
 from core.models import Question, Answer, User
 from rest_framework import serializers
 from django.db.models import Count
@@ -10,6 +11,7 @@ from django.db.models import Count
 
 class AnswerNumberSerializer(serializers.ModelSerializer):
     answer_count = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
 
     class Meta:
         model = Answer
@@ -22,6 +24,7 @@ class AnswerNumberSerializer(serializers.ModelSerializer):
 class ListQuestionsSerializer(serializers.ModelSerializer):
     answer_count = serializers.SerializerMethodField('get_total_answers')
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
 
     def get_total_answers(self, obj):
         # answer_count = Question.objects.get(pk=obj.pk).answers.count()
@@ -42,6 +45,7 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
 
 class QuestionSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
     class Meta:
         model = Question
         fields = (
