@@ -1,7 +1,7 @@
 from django.utils.timezone import localtime
 from core.models import Question, Answer, User
 from rest_framework import serializers
-from django.db.models import Count
+from django.db.models import Count, fields
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AnswerNumberSerializer(serializers.ModelSerializer):
     answer_count = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
-
+    
     class Meta:
         model = Answer
         fields = ("answer_count",)
@@ -23,6 +23,7 @@ class AnswerNumberSerializer(serializers.ModelSerializer):
 class ListAnswerSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
+    favorited_by = serializers.SlugRelatedField(many=True, read_only=True, slug_field="username")
     class Meta:
         model = Answer
         fields = (
@@ -40,6 +41,7 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
     answer_count = serializers.SerializerMethodField('get_total_answers')
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
+    favorited_by = serializers.SlugRelatedField(many=True, read_only=True, slug_field="username")
 
     def get_total_answers(self, obj):
         # answer_count = Question.objects.get(pk=obj.pk).answers.count()
@@ -75,6 +77,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
     answers = ListAnswerSerializer(many=True, read_only=True)
+    favorited_by = serializers.SlugRelatedField(many=True, read_only=True, slug_field="username")
     class Meta:
         model = Question
         fields = (
@@ -83,5 +86,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
             "body",
             "owner",
             "created_at",
+            "favorited_by",
             "answers",
         )
+

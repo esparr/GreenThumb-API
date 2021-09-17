@@ -35,7 +35,7 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     body = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    favorited_by = models.ManyToManyField("User", related_name="fav_questions", blank=True)
+    favorited_by = models.ManyToManyField(User, related_name="fav_questions", blank=True)
     
     def __str__(self):
             return f"{self.title}"
@@ -46,7 +46,7 @@ class Answer(models.Model):
     body = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     accepted = models.BooleanField(default=False)
-    favorited_by = models.ManyToManyField("User", related_name="fav_answers", blank=True)
+    favorited_by = models.ManyToManyField(User, related_name="fav_answers", blank=True)
 
     def __str__(self):
         return f"{self.body}"
