@@ -19,8 +19,9 @@ class User(AbstractUser):
         user.save(using=self._db)
         return user
     
+    USER_CREATE_PASSWORD_RETYPE=True
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name','last_name', 'email', 'password']
+    REQUIRED_FIELDS = ['first_name','last_name', 'email']
 
     def __repr__(self):
         return f"<User username={self.username}>"

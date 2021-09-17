@@ -4,10 +4,10 @@ from rest_framework import serializers
 from django.db.models import Count
 
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ("username", "email")
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username", "email")
 
 class AnswerNumberSerializer(serializers.ModelSerializer):
     answer_count = serializers.SerializerMethodField(read_only=True)
@@ -54,4 +54,18 @@ class QuestionSerializer(serializers.ModelSerializer):
             "body",
             "owner",
             "created_at",
+        )
+
+class QuestionDetailSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
+    class Meta:
+        model = Question
+        fields = (
+            "pk",
+            "title",
+            "body",
+            "owner",
+            "created_at",
+            "answers",
         )

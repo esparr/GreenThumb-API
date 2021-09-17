@@ -18,9 +18,9 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from core import views as api_views
 
+
 router = SimpleRouter()
 router.register(r"users", api_views.DjoserUserViewSet)
-router.register(r'questions', api_views.QuestionsViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,6 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('api/', include(router.urls)),
+    path('api/questions/', api_views.QuestionsViewSet, name='questions-list'),
+    path('api/questions/<int:pk>/', api_views.QuestionDetailViewSet, name='questions-detail')
 ]
