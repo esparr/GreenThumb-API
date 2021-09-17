@@ -42,7 +42,6 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
             "answer_count",
         )
 
-
 class QuestionSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)

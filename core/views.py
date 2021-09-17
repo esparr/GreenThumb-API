@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from djoser.views import UserViewSet as DjoserUserViewSet
-from rest_framework.generics import ListCreateAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Question, Answer, User
 from .serializers import ListQuestionsSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
-from .custom_permissions import IsQuestionOwnerOrReadOnly, IsAnswerOwnerOrReadOnly
+from .custom_permissions import IsQuestionOwnerOrReadOnly
 
 # Create your views here.
 
@@ -44,16 +43,3 @@ class QuestionDetailViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(reader=self.request.user)
-
-
-# questions_list = QuestionsViewSet.as_view({
-#     'get': 'list',
-#     'post': 'create',
-# })
-
-# questions_detail = QuestionDetailViewSet.as_view({
-#     'get': 'retrieve',
-#     'post': 'create',
-#     'put': 'update',
-#     'delete': 'destroy',
-# })
