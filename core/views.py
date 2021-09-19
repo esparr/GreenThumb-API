@@ -12,7 +12,6 @@ from .custom_permissions import IsAnswerOwnerOrReadOnly, IsQuestionOwnerOrReadOn
 class UserViewSet(DjoserUserViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated, IsQuestionOwnerOrReadOnly, IsAnswerOwnerOrReadOnly]
 
 
 class QuestionsViewSet(ListCreateAPIView):
