@@ -45,5 +45,8 @@ class Answer(models.Model):
     accepted = models.BooleanField(default=False)
     favorited_by = models.ManyToManyField(User, related_name="fav_answers", blank=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return f"{self.body}"

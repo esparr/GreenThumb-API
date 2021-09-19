@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 from djoser.views import UserViewSet as DjoserUserViewSet
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import Question, Answer, User
-from .serializers import ListQuestionsSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
+from .serializers import AnswerSerializer, ListQuestionsSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
 
 # Create your views here.
 
@@ -44,3 +44,13 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class CreateAnswersViewset(CreateAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer, **kwargs):
+        question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        serializer.save(owner=self.request.user, question=question)
+        

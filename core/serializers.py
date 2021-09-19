@@ -5,20 +5,24 @@ from django.db.models import Count, fields
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ("username", "email")
 
-class AnswerNumberSerializer(serializers.ModelSerializer):
-    answer_count = serializers.SerializerMethodField(read_only=True)
+class AnswerSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    question = serializers.PrimaryKeyRelatedField(read_only=True)
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
-    
     class Meta:
         model = Answer
-        fields = ("answer_count",)
-
-    def get_total_(self, obj):
-        return Question.objects.annotate(number_of_answers=Count('answers'))
+        fields = (
+            "pk",
+            "body",
+            "owner",
+            "question",
+            "created_at",
+        )
 
 class ListAnswerSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
@@ -44,7 +48,6 @@ class ListQuestionsSerializer(serializers.ModelSerializer):
     favorited_by = serializers.SlugRelatedField(many=True, read_only=True, slug_field="username")
 
     def get_total_answers(self, obj):
-        # answer_count = Question.objects.get(pk=obj.pk).answers.count()
         question = Question.objects.get(pk=obj.pk)
         answer_count = question.answers.aggregate(Count('id'))
         return answer_count
