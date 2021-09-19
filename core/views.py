@@ -16,12 +16,12 @@ class UserViewSet(DjoserUserViewSet):
 class ProfileViewSet(ListAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
-    permission_class = [IsAuthenticated, IsQuestionOwnerOrReadOnly, IsAnswerOwnerOrReadOnly]
+    permission_class = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(username=self.request.user)
-        
+
 class QuestionsViewSet(ListCreateAPIView):
     queryset = Question.objects.all().order_by("-created_at")
     serializer_class = QuestionSerializer
