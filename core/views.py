@@ -6,12 +6,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import Question, Answer, User
 from .serializers import AnswerSerializer, ListQuestionsSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
-
+from .custom_permissions import IsAnswerOwnerOrReadOnly, IsQuestionOwnerOrReadOnly
 # Create your views here.
 
 class UserViewSet(DjoserUserViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated, IsQuestionOwnerOrReadOnly, IsAnswerOwnerOrReadOnly]
+
 
 class QuestionsViewSet(ListCreateAPIView):
     queryset = Question.objects.all().order_by("-created_at")
@@ -30,7 +32,7 @@ class QuestionsViewSet(ListCreateAPIView):
 class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsQuestionOwnerOrReadOnly]
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -54,3 +56,10 @@ class CreateAnswersViewset(CreateAPIView):
         question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
         serializer.save(owner=self.request.user, question=question)
         
+class SecondCreateAnswersViewset(CreateAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

@@ -31,4 +31,5 @@ urlpatterns = [
     path('api/questions/', api_views.QuestionsViewSet.as_view(), name='questions-list'),
     path('api/questions/<int:pk>/', api_views.QuestionDetailViewSet.as_view(), name='questions-detail'),
     path('api/questions/<int:pk>/answers/new', api_views.CreateAnswersViewset.as_view(), name='answer'),
+    path('api/answers/new', api_views.SecondCreateAnswersViewset.as_view(), name='answer-new'),
 ]
