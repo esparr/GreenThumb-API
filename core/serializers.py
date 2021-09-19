@@ -24,6 +24,20 @@ class AnswerSerializer(serializers.ModelSerializer):
             "created_at",
         )
 
+class SecondAnswerSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
+    class Meta:
+        model = Answer
+        fields = (
+            "pk",
+            "body",
+            "owner",
+            "question",
+            "created_at",
+        )
+        
+
 class ListAnswerSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
