@@ -3,18 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 class User(AbstractUser):
-    # def create_user(self, email, password):
-
-    #     if not email:
-    #         raise ValueError('Users must have an email address')
-
-    #     user = self.model(
-    #         email=self.normalize_email(email),
-    #     )
-
-    #     user.set_password(password)
-    #     user.save(using=self._db)
-    #     return user
     
     USER_CREATE_PASSWORD_RETYPE = True
     USERNAME_FIELD = 'username'
@@ -22,7 +10,7 @@ class User(AbstractUser):
 
     def __repr__(self):
         return f"<User username={self.username}>"
-        
+
     def __str__(self):
         return self.username
     pass

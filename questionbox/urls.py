@@ -20,7 +20,6 @@ from core import views as api_views
 
 
 router = SimpleRouter()
-router.register(r"users", api_views.DjoserUserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +27,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('api/', include(router.urls)),
+    path('auth/users/', api_views.DjoserUserViewSet.as_view({'get': 'list'}), name='register-new-user'),
+    path('auth/users/me', api_views.ProfileViewSet.as_view(), name='user-profile'),
     path('api/questions/', api_views.QuestionsViewSet.as_view(), name='questions-list'),
     path('api/questions/<int:pk>/', api_views.QuestionDetailViewSet.as_view(), name='questions-detail'),
     path('api/questions/<int:pk>/answers/new', api_views.CreateAnswersViewset.as_view(), name='answer'),
