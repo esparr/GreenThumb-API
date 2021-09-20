@@ -17,8 +17,6 @@ class ProfileViewSet(ListAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_class = [IsAuthenticated]
-    search_fields = ['title']
-    filter_backends = (SearchFilter)
 
     def get_queryset(self):
         queryset = super().get_queryset()
