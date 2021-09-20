@@ -43,8 +43,6 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsQuestionOwnerOrReadOnly]
-    search_fields = ['title']
-    filter_backends = (SearchFilter)
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
