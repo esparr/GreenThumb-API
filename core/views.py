@@ -1,31 +1,36 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import Question, Answer, User
 from .serializers import AnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, SecondAnswerSerializer, UserSerializer
-from .custom_permissions import IsAnswerOwnerOrReadOnly, IsQuestionOwnerOrReadOnly
+from .custom_permissions import IsQuestionOwnerOrReadOnly
+from rest_framework.filters import SearchFilter, OrderingFilter
 # Create your views here.
 
 class UserViewSet(DjoserUserViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class ProfileViewSet(ListAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_class = [IsAuthenticated]
+    search_fields = ['title']
+    filter_backends = (SearchFilter)
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(username=self.request.user)
 
 class QuestionsViewSet(ListCreateAPIView):
+    search_fields = ['title']
+    filter_backends = (SearchFilter,)
     queryset = Question.objects.all().order_by("-created_at")
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -40,6 +45,8 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsQuestionOwnerOrReadOnly]
+    search_fields = ['title']
+    filter_backends = (SearchFilter)
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
