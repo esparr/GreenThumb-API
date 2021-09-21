@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from .models import Question, Answer, User
 from .serializers import AnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, SecondAnswerSerializer, UserSerializer
 from .custom_permissions import IsQuestionOwnerOrReadOnly
-from rest_framework.filters import SearchFilter, OrderingFilter
+from django.contrib.postgres.search import SearchVector
 # Create your views here.
 
 class UserViewSet(DjoserUserViewSet):
@@ -23,11 +23,18 @@ class ProfileViewSet(ListAPIView):
         return queryset.filter(username=self.request.user)
 
 class QuestionsViewSet(ListCreateAPIView):
-    search_fields = ['title']
-    filter_backends = (SearchFilter,)
+    # search_fields = ['title', 'owner__username']
+    # filter_backends = (SearchFilter,)
     queryset = Question.objects.all().order_by("-created_at")
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        if self.request.query_params.get("search"):
+            search_term = self.request.query_params.get("search")
+            queryset = Question.objects.annotate(search=SearchVector('title', 'owner__username')).filter(search=search_term)
+            return queryset
+        return super().get_queryset()
 
 
     def get_serializer_class(self):
@@ -49,10 +56,6 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
         if self.request.method == 'GET':
             serializer_class = QuestionDetailSerializer
         return serializer_class
-
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
 
 class CreateAnswersViewset(CreateAPIView):
     queryset = Answer.objects.all()
