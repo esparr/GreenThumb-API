@@ -17,7 +17,7 @@ class User(AbstractUser):
 
 class Tag(models.Model):
     insert = models.CharField(max_length=32)
-    
+
 class Question(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions', null=True)
     title = models.CharField(max_length=255)
@@ -26,6 +26,9 @@ class Question(models.Model):
     favorited_by = models.ManyToManyField(User, related_name="fav_questions", blank=True)
     tags = models.ManyToManyField(Tag, related_name='questions', blank=True)
     
+    class Meta:
+        ordering = ['-created_at']
+        
     def __str__(self):
             return f"{self.title}"
 

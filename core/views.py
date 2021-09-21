@@ -23,9 +23,7 @@ class ProfileViewSet(ListAPIView):
         return queryset.filter(username=self.request.user)
 
 class QuestionsViewSet(ListCreateAPIView):
-    # search_fields = ['title', 'owner__username']
-    # filter_backends = (SearchFilter,)
-    queryset = Question.objects.all().order_by("-created_at")
+    queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
