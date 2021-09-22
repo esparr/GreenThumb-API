@@ -2,11 +2,10 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
-from .models import Question, Answer, User
-from .serializers import AnswerSerializer, FavoritedQuestionSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, SecondAnswerSerializer, UserSerializer
-from .custom_permissions import IsQuestionOwnerOrReadOnly
 from django.contrib.postgres.search import SearchVector
+from .models import Question, Answer, User
+from .serializers import AnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, SecondAnswerSerializer, UserSerializer
+
 
 
 class UserViewSet(DjoserUserViewSet):
