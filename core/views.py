@@ -1,10 +1,11 @@
+from core.custom_permissions import IsAnswerOwnerOrReadOnly
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from djoser.views import UserViewSet as DjoserUserViewSet
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.postgres.search import SearchVector
 from .models import Question, Answer, User
-from .serializers import AnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, SecondAnswerSerializer, UserSerializer
+from .serializers import AnswerSerializer, ListAnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
 
 
 
@@ -76,8 +77,14 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
 
 class CreateAnswersViewset(CreateAPIView):
     queryset = Answer.objects.all()
-    serializer_class = SecondAnswerSerializer
+    serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class AnswersViewset(RetrieveUpdateDestroyAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = ListAnswerSerializer
+    permission_classes = [IsAnswerOwnerOrReadOnly]
+

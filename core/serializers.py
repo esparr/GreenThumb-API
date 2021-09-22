@@ -12,20 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    question = serializers.PrimaryKeyRelatedField(read_only=True)
-    created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
-    class Meta:
-        model = Answer
-        fields = (
-            "pk",
-            "body",
-            "owner",
-            "question",
-            "created_at",
-        )
-
-class SecondAnswerSerializer(serializers.ModelSerializer):
-    owner = serializers.SlugRelatedField(read_only=True, slug_field="username")
     created_at = serializers.DateTimeField(format='%b. %d, %Y at %I:%M %p', read_only=True)
     class Meta:
         model = Answer
@@ -120,11 +106,4 @@ class ProfileSerializer(serializers.ModelSerializer):
             "email",
             "questions",
             "answers",
-        )
-
-class FavoritedAnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Answer
-        fields = (
-            'favorited_by'
         )
