@@ -86,5 +86,10 @@ class CreateAnswersViewset(CreateAPIView):
 class AnswersViewset(RetrieveUpdateDestroyAPIView):
     queryset = Answer.objects.all()
     serializer_class = ListAnswerSerializer
-    permission_classes = [IsAnswerOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
+    # def partial_update(self, request, *args, **kwargs):
+    #     question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+    #     if question.owner == self.request.User and self.request.fields('accepted'):
+    #         kwargs['partial'] = True
+    #     return self.update(request, *args, **kwargs,)
