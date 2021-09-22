@@ -121,3 +121,17 @@ class ProfileSerializer(serializers.ModelSerializer):
             "questions",
             "answers",
         )
+
+class FavoritedQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = (
+            'favorited_by'
+        )
+
+class FavoritedAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = (
+            'favorited_by'
+        )

@@ -9,11 +9,11 @@ admin.site.register(User, UserAdmin)
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ['title', 'owner', 'created_at']
+    list_display = ['pk', 'title', 'owner', 'created_at']
     pass
 
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ['body', 'question', 'owner', 'created_at']
+    list_display = ['pk', 'body', 'question', 'owner', 'created_at']
     pass
