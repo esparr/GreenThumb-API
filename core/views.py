@@ -82,7 +82,3 @@ class CreateAnswersViewset(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-class FavoritedQuestionViewset(UpdateAPIView):
-    queryset = Question.objects.all()
-    serializer_class = FavoritedQuestionSerializer
