@@ -1,9 +1,7 @@
-from rest_framework import permissions
-from core.custom_permissions import IsAnswerOwnerOrReadOnly
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.postgres.search import SearchVector
 from .models import Question, Answer, User
 from .serializers import AnswerSerializer, ListAnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
