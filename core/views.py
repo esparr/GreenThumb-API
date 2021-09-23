@@ -51,7 +51,7 @@ class QuestionsViewSet(ListCreateAPIView):
 class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -62,15 +62,6 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
         if self.request.method == 'PATCH':
             serializer_class = QuestionDetailSerializer
         return serializer_class
-    
-    def has_permissions(self):
-        if self.request.method == 'PUT':
-            permission_classes = [IsAuthenticated]
-        if self.request.method == 'PATCH':
-            permission_classes = [IsAuthenticated]
-        if self.request.method == 'DELETE':
-            permission_classes = [IsAuthenticated]
-        return [permission(permission_classes) for permission in self.permission_classes]
     
     def partial_update(self, request, *args, **kwargs):
         question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
