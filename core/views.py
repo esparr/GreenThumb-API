@@ -1,8 +1,9 @@
+from rest_framework import permissions
 from core.custom_permissions import IsAnswerOwnerOrReadOnly
-from django.shortcuts import get_list_or_404, get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.postgres.search import SearchVector
 from .models import Question, Answer, User
 from .serializers import AnswerSerializer, ListAnswerSerializer, ListQuestionsSerializer, ProfileSerializer, QuestionDetailSerializer, QuestionSerializer, UserSerializer
@@ -50,7 +51,7 @@ class QuestionsViewSet(ListCreateAPIView):
 class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -62,11 +63,14 @@ class QuestionDetailViewSet(RetrieveUpdateDestroyAPIView):
             serializer_class = QuestionDetailSerializer
         return serializer_class
     
-    # def get_queryset(self):
-    #     question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
-    #     if question.answers.count > 0:
-
-    #     return super().get_queryset()
+    def has_permissions(self):
+        if self.request.method == 'PUT':
+            permission_classes = [IsAuthenticated]
+        if self.request.method == 'PATCH':
+            permission_classes = [IsAuthenticated]
+        if self.request.method == 'DELETE':
+            permission_classes = [IsAuthenticated]
+        return [permission(permission_classes) for permission in self.permission_classes]
     
     def partial_update(self, request, *args, **kwargs):
         question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
@@ -87,9 +91,3 @@ class AnswersViewset(RetrieveUpdateDestroyAPIView):
     queryset = Answer.objects.all()
     serializer_class = ListAnswerSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-
-    # def partial_update(self, request, *args, **kwargs):
-    #     question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
-    #     if question.owner == self.request.User and self.request.fields('accepted'):
-    #         kwargs['partial'] = True
-    #     return self.update(request, *args, **kwargs,)
