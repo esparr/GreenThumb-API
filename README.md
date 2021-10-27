@@ -20,7 +20,7 @@ POST auth/token/login/
 
 {
 "username": "admin",
-"password": "admin"
+"password": "somepassword"
 }
 ```
 
