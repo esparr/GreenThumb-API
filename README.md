@@ -1,12 +1,4 @@
-# Team Skywalker - Question Box
-
-### Helpful Links:
-
-[GitHub - esparr/team-project-questionbox-skywalker](https://github.com/esparr/team-project-questionbox-skywalker)
-
-[API on Heroku](https://questionbox-team-skywalker.herokuapp.com/)
-
-[Log in | Django site admin](https://questionbox-team-skywalker.herokuapp.com/admin)
+# GreenThumb - API
 
 
 ## Headers
@@ -74,8 +66,8 @@ POST auth/users/
 	"first_name": "Bruce",
 	"last_name": "Wayne",
 	"email": "batman@email.com",
-	"password": "thisisbatman",
-	"re_password": "thisisbatman"
+	"password": "thisispassword",
+	"re_password": "thisispassword"
 }
 ```
 
